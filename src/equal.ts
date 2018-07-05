@@ -1,4 +1,5 @@
-import { has } from './utils'
+import { has } from './utils';
+
 export function equal(a: any, b: any): boolean {
     return eq(a, b, [], [])
 }

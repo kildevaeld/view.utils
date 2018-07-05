@@ -6,7 +6,7 @@ export interface Call {
 
 export function callFunc(fn: Call[], args: any[] = []) {
     let l = fn.length, i = -1, a1 = args[0], a2 = args[1],
-        a3 = args[2], a4 = args[3];
+        a3 = args[2], a4 = args[3], a5 = args[4];
 
     switch (args.length) {
         case 0: while (++i < l) fn[i].handler.call(fn[i].ctx); return;
@@ -14,6 +14,7 @@ export function callFunc(fn: Call[], args: any[] = []) {
         case 2: while (++i < l) fn[i].handler.call(fn[i].ctx, a1, a2); return;
         case 3: while (++i < l) fn[i].handler.call(fn[i].ctx, a1, a2, a3); return;
         case 4: while (++i < l) fn[i].handler.call(fn[i].ctx, a1, a2, a3, a4); return;
+        case 5: while (++i < l) fn[i].handler.call(fn[i].ctx, a1, a2, a3, a4, a5); return;
         default: while (++i < l) fn[i].handler.apply(fn[i].ctx, args); return;
     }
 }
@@ -27,8 +28,7 @@ export function getOption<T>(option: string, objs: any[]): T | undefined {
     for (let i = 0, ii = objs.length; i < ii; i++) {
         if (isObject(objs[i]) && objs[i][option]) return objs[i][option];
     }
-
-    return undefined;
+    return void 0;
 }
 
 
@@ -61,8 +61,36 @@ export function triggerMethodOn<T extends any>(self: T, eventName: string, ...ar
     }
 }
 
-export function isObject(obj: any): obj is Object {
-    return obj === Object(obj);
+export function isObject(val: any): val is object {
+    //return obj === Object(obj);
+    return val != null && typeof val === 'object' && Array.isArray(val) === false;
+}
+
+function isObjectObject(o: any) {
+    return isObject(o) === true
+        && Object.prototype.toString.call(o) === '[object Object]';
+}
+
+export function isPlainObject(o: any): o is object {
+    var ctor: any, prot: any;
+
+    if (isObjectObject(o) === false) return false;
+
+    // If has modified constructor
+    ctor = o.constructor;
+    if (typeof ctor !== 'function') return false;
+
+    // If has modified prototype
+    prot = ctor.prototype;
+    if (isObjectObject(prot) === false) return false;
+
+    // If constructor does not have an Object-specific method
+    if (prot.hasOwnProperty('isPrototypeOf') === false) {
+        return false;
+    }
+
+    // Most likely a plain Object
+    return true;
 }
 
 export function isFunction(a: any): a is Function {
@@ -73,8 +101,15 @@ export function isString(a: any): a is string {
     return typeof a === 'string';
 }
 
-export function isElement(a: any): a is Element {
-    return a instanceof Element;
+export function isElement(input: any): input is Element {
+    //return a instanceof Element;
+    if (!input) return false;
+    else if (input instanceof Element) return true;
+    return (input != null)
+        && (typeof input === 'object')
+        && (input.nodeType === Node.ELEMENT_NODE)
+        && (typeof input.style === 'object')
+        && (typeof input.ownerDocument === 'object');
 }
 
 export function extend<T extends Object, U extends Object>(obj: T, ...args: U[]): T & U {
