@@ -57,7 +57,7 @@ export function triggerMethodOn<T extends any>(self: T, eventName: string, ...ar
         callFunc([{
             handler: (<any>self).trigger,
             ctx: self
-        } as any], args);
+        }], args);
     }
 }
 

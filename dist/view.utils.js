@@ -4,11 +4,8 @@
     (factory((global.viewjs = global.viewjs || {}, global.viewjs.utils = {})));
 }(this, (function (exports) { 'use strict';
 
-    function callFunc(fn, args) {
-        if (args === void 0) {
-            args = [];
-        }
-        var l = fn.length,
+    function callFunc(fn, args = []) {
+        let l = fn.length,
             i = -1,
             a1 = args[0],
             a2 = args[1],
@@ -39,16 +36,12 @@
                 return;
         }
     }
-    function result(obj, prop) {
-        var args = [];
-        for (var _i = 2; _i < arguments.length; _i++) {
-            args[_i - 2] = arguments[_i];
-        }
+    function result(obj, prop, ...args) {
         if (isFunction(obj[prop])) return obj[prop].apply(obj, args);
         return obj[prop];
     }
     function getOption(option, objs) {
-        for (var i = 0, ii = objs.length; i < ii; i++) {
+        for (let i = 0, ii = objs.length; i < ii; i++) {
             if (isObject(objs[i]) && objs[i][option]) return objs[i][option];
         }
         return void 0;
@@ -63,12 +56,8 @@
      * @param {string} eventName
      * @param {...any[]} args
      */
-    function triggerMethodOn(self, eventName) {
-        var args = [];
-        for (var _i = 2; _i < arguments.length; _i++) {
-            args[_i - 2] = arguments[_i];
-        }
-        var ev = camelcase("on-" + eventName.replace(':', '-'));
+    function triggerMethodOn(self, eventName, ...args) {
+        const ev = camelcase("on-" + eventName.replace(':', '-'));
         if (self[ev] && typeof self[ev] === 'function') {
             callFunc([{
                 handler: self[ev],
@@ -111,6 +100,14 @@
     function isFunction(a) {
         return typeof a === 'function';
     }
+    function isConstructor(a) {
+        try {
+            Reflect.construct(String, [], a);
+        } catch (e) {
+            return false;
+        }
+        return true;
+    }
     function isString(a) {
         return typeof a === 'string';
     }
@@ -119,6 +116,9 @@
         return input != null && typeof input === 'object' && input.nodeType === Node.ELEMENT_NODE && typeof input.style === 'object' && typeof input.ownerDocument === 'object';
     }
     function isNumber(num) {
+        return typeof num === 'number';
+    }
+    function isNumberic(num) {
         if (typeof num === 'number') {
             return num - num === 0;
         }
@@ -127,22 +127,18 @@
         }
         return false;
     }
-    function extend(obj) {
-        var args = [];
-        for (var _i = 1; _i < arguments.length; _i++) {
-            args[_i - 1] = arguments[_i];
-        }
+    function extend(obj, ...args) {
         if (!isObject(obj)) return obj;
-        for (var i = 0, ii = args.length; i < ii; i++) {
-            var o = args[i];
+        for (let i = 0, ii = args.length; i < ii; i++) {
+            const o = args[i];
             if (!isObject(o)) continue;
-            for (var k in o) {
+            for (const k in o) {
                 if (has(o, k)) obj[k] = o[k];
             }
         }
         return obj;
     }
-    var _has = Object.prototype.hasOwnProperty;
+    const _has = Object.prototype.hasOwnProperty;
     function has(obj, prop) {
         return _has.call(obj, prop);
     }
@@ -152,10 +148,7 @@
         });
     }
     var idCounter = 0;
-    function uniqueId(prefix) {
-        if (prefix === void 0) {
-            prefix = "";
-        }
+    function uniqueId(prefix = "") {
         return prefix + ++idCounter;
     }
     function indexOf(array, item) {
@@ -166,7 +159,7 @@
     function equal(a, b) {
         return eq(a, b, [], []);
     }
-    var toString = Object.prototype.toString;
+    const toString = Object.prototype.toString;
     function eq(a, b, aStack, bStack) {
         // Identical objects are equal. `0 === -0`, but they aren't identical.
         // See the [Harmony `egal` proposal](http://wiki.ecmascript.org/doku.php?id=harmony:egal).
@@ -260,9 +253,11 @@
     exports.isObject = isObject;
     exports.isPlainObject = isPlainObject;
     exports.isFunction = isFunction;
+    exports.isConstructor = isConstructor;
     exports.isString = isString;
     exports.isElement = isElement;
     exports.isNumber = isNumber;
+    exports.isNumberic = isNumberic;
     exports.extend = extend;
     exports.has = has;
     exports.camelcase = camelcase;
