@@ -13,7 +13,8 @@
             a1 = args[0],
             a2 = args[1],
             a3 = args[2],
-            a4 = args[3];
+            a4 = args[3],
+            a5 = args[4];
         switch (args.length) {
             case 0:
                 while (++i < l) fn[i].handler.call(fn[i].ctx);
@@ -29,6 +30,9 @@
                 return;
             case 4:
                 while (++i < l) fn[i].handler.call(fn[i].ctx, a1, a2, a3, a4);
+                return;
+            case 5:
+                while (++i < l) fn[i].handler.call(fn[i].ctx, a1, a2, a3, a4, a5);
                 return;
             default:
                 while (++i < l) fn[i].handler.apply(fn[i].ctx, args);
@@ -47,7 +51,7 @@
         for (var i = 0, ii = objs.length; i < ii; i++) {
             if (isObject(objs[i]) && objs[i][option]) return objs[i][option];
         }
-        return undefined;
+        return void 0;
     }
     /**
      * Trigger an event on an object, if it's an eventemitter,
@@ -79,8 +83,28 @@
             }], args);
         }
     }
-    function isObject(obj) {
-        return obj === Object(obj);
+    function isObject(val) {
+        //return obj === Object(obj);
+        return val != null && typeof val === 'object' && Array.isArray(val) === false;
+    }
+    function isObjectObject(o) {
+        return isObject(o) === true && Object.prototype.toString.call(o) === '[object Object]';
+    }
+    function isPlainObject(o) {
+        var ctor, prot;
+        if (isObjectObject(o) === false) return false;
+        // If has modified constructor
+        ctor = o.constructor;
+        if (typeof ctor !== 'function') return false;
+        // If has modified prototype
+        prot = ctor.prototype;
+        if (isObjectObject(prot) === false) return false;
+        // If constructor does not have an Object-specific method
+        if (prot.hasOwnProperty('isPrototypeOf') === false) {
+            return false;
+        }
+        // Most likely a plain Object
+        return true;
     }
     function isFunction(a) {
         return typeof a === 'function';
@@ -88,8 +112,10 @@
     function isString(a) {
         return typeof a === 'string';
     }
-    function isElement(a) {
-        return a instanceof Element;
+    function isElement(input) {
+        //return a instanceof Element;
+        if (!input) return false;else if (input instanceof Element) return true;
+        return input != null && typeof input === 'object' && input.nodeType === Node.ELEMENT_NODE && typeof input.style === 'object' && typeof input.ownerDocument === 'object';
     }
     function extend(obj) {
         var args = [];
@@ -221,6 +247,7 @@
     exports.getOption = getOption;
     exports.triggerMethodOn = triggerMethodOn;
     exports.isObject = isObject;
+    exports.isPlainObject = isPlainObject;
     exports.isFunction = isFunction;
     exports.isString = isString;
     exports.isElement = isElement;
