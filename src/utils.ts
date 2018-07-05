@@ -112,6 +112,16 @@ export function isElement(input: any): input is Element {
         && (typeof input.ownerDocument === 'object');
 }
 
+export function isNumber(num: any) {
+    if (typeof num === 'number') {
+        return num - num === 0;
+    }
+    if (typeof num === 'string' && num.trim() !== '') {
+        return (Number as any).isFinite ? (Number as any).isFinite(+num) : isFinite(+num);
+    }
+    return false;
+}
+
 export function extend<T extends Object, U extends Object>(obj: T, ...args: U[]): T & U {
     if (!isObject(obj)) return obj
 
