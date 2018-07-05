@@ -102,7 +102,6 @@ export function isString(a: any): a is string {
 }
 
 export function isElement(input: any): input is Element {
-    //return a instanceof Element;
     if (!input) return false;
     else if (input instanceof Element) return true;
     return (input != null)
