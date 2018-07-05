@@ -61,8 +61,11 @@ export function triggerMethodOn<T extends any>(self: T, eventName: string, ...ar
     }
 }
 
+export function isObjectLike(val: any): val is object {
+    return val === Object(val);
+}
+
 export function isObject(val: any): val is object {
-    //return obj === Object(obj);
     return val != null && typeof val === 'object' && Array.isArray(val) === false;
 }
 
@@ -97,6 +100,15 @@ export function isFunction(a: any): a is Function {
     return typeof a === 'function';
 }
 
+export function isConstructor(a: any): a is Function {
+    try {
+        Reflect.construct(String, [], a);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
+
 export function isString(a: any): a is string {
     return typeof a === 'string';
 }
@@ -111,7 +123,11 @@ export function isElement(input: any): input is Element {
         && (typeof input.ownerDocument === 'object');
 }
 
-export function isNumber(num: any) {
+export function isNumber(num: any): num is number {
+    return typeof num === 'number';
+}
+
+export function isNumberic(num: any): num is number {
     if (typeof num === 'number') {
         return num - num === 0;
     }

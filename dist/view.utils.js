@@ -83,8 +83,10 @@
             }], args);
         }
     }
+    function isObjectLike(val) {
+        return val === Object(val);
+    }
     function isObject(val) {
-        //return obj === Object(obj);
         return val != null && typeof val === 'object' && Array.isArray(val) === false;
     }
     function isObjectObject(o) {
@@ -113,9 +115,17 @@
         return typeof a === 'string';
     }
     function isElement(input) {
-        //return a instanceof Element;
         if (!input) return false;else if (input instanceof Element) return true;
         return input != null && typeof input === 'object' && input.nodeType === Node.ELEMENT_NODE && typeof input.style === 'object' && typeof input.ownerDocument === 'object';
+    }
+    function isNumber(num) {
+        if (typeof num === 'number') {
+            return num - num === 0;
+        }
+        if (typeof num === 'string' && num.trim() !== '') {
+            return Number.isFinite ? Number.isFinite(+num) : isFinite(+num);
+        }
+        return false;
     }
     function extend(obj) {
         var args = [];
@@ -246,11 +256,13 @@
     exports.result = result;
     exports.getOption = getOption;
     exports.triggerMethodOn = triggerMethodOn;
+    exports.isObjectLike = isObjectLike;
     exports.isObject = isObject;
     exports.isPlainObject = isPlainObject;
     exports.isFunction = isFunction;
     exports.isString = isString;
     exports.isElement = isElement;
+    exports.isNumber = isNumber;
     exports.extend = extend;
     exports.has = has;
     exports.camelcase = camelcase;

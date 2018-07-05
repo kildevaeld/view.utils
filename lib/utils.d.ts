@@ -16,11 +16,15 @@ export declare function getOption<T>(option: string, objs: any[]): T | undefined
  * @param {...any[]} args
  */
 export declare function triggerMethodOn<T extends any>(self: T, eventName: string, ...args: any[]): void;
+export declare function isObjectLike(val: any): val is object;
 export declare function isObject(val: any): val is object;
 export declare function isPlainObject(o: any): o is object;
 export declare function isFunction(a: any): a is Function;
+export declare function isConstructor(a: any): a is Function;
 export declare function isString(a: any): a is string;
 export declare function isElement(input: any): input is Element;
+export declare function isNumber(num: any): num is number;
+export declare function isNumberic(num: any): num is number;
 export declare function extend<T extends Object, U extends Object>(obj: T, ...args: U[]): T & U;
 export declare function has(obj: Object, prop: string): boolean;
 export declare function camelcase(input: string): string;
