@@ -1,8 +1,10 @@
+export declare type Callback = (...args: any[]) => void;
 export interface Call {
     ctx?: any;
-    handler: (...args: any[]) => void;
+    handler: Callback;
 }
 export declare function callFunc(fn: Call[], args?: any[]): void;
+export declare function callFuncCtx(fn: Callback[] | Callback, args?: any[], ctx?: any): void;
 export declare function result<T>(obj: any, prop: string, ...args: any[]): T | undefined;
 export declare function getOption<T>(option: string, objs: any[], resolve?: boolean): T | undefined;
 /**

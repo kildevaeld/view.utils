@@ -36,6 +36,39 @@
                 return;
         }
     }
+    function callFuncCtx(fn, args = [], ctx) {
+        if (!Array.isArray(fn)) fn = [fn];
+        let l = fn.length,
+            i = -1,
+            a1 = args[0],
+            a2 = args[1],
+            a3 = args[2],
+            a4 = args[3],
+            a5 = args[4];
+        switch (args.length) {
+            case 0:
+                while (++i < l) fn[i].call(ctx);
+                return;
+            case 1:
+                while (++i < l) fn[i].call(ctx, a1);
+                return;
+            case 2:
+                while (++i < l) fn[i].call(ctx, a1, a2);
+                return;
+            case 3:
+                while (++i < l) fn[i].call(ctx, a1, a2, a3);
+                return;
+            case 4:
+                while (++i < l) fn[i].call(ctx, a1, a2, a3, a4);
+                return;
+            case 5:
+                while (++i < l) fn[i].call(ctx, a1, a2, a3, a4, a5);
+                return;
+            default:
+                while (++i < l) fn[i].apply(ctx, args);
+                return;
+        }
+    }
     function result(obj, prop, ...args) {
         if (isFunction(obj[prop])) return obj[prop].apply(obj, args);
         return obj[prop];
@@ -248,6 +281,7 @@
     }
 
     exports.callFunc = callFunc;
+    exports.callFuncCtx = callFuncCtx;
     exports.result = result;
     exports.getOption = getOption;
     exports.triggerMethodOn = triggerMethodOn;
