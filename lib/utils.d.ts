@@ -1,4 +1,5 @@
 import { Call, Callback, Constructor } from './types';
+export declare function matches(elm: Element, selector: string): boolean;
 export declare function getGlobal(): any;
 export declare function callFunc(fn: Call[], args?: any[]): void;
 export declare function callFuncCtx(fn: Callback[] | Callback, args?: any[], ctx?: any): void;

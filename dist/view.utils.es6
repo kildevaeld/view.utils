@@ -20,6 +20,15 @@ var toConsumableArray = function (arr) {
   }
 };
 
+// Because IE/edge stinks!
+var ElementProto = typeof Element !== 'undefined' && Element.prototype || {};
+var matchesSelector = ElementProto.matches || ElementProto.webkitMatchesSelector || ElementProto.mozMatchesSelector || ElementProto.msMatchesSelector || ElementProto.oMatchesSelector || function (selector) {
+    var nodeList = (this.parentNode || document).querySelectorAll(selector) || [];
+    return !!~indexOf(nodeList, this);
+};
+function matches(elm, selector) {
+    return matchesSelector.call(elm, selector);
+}
 function getGlobal() {
     return Function('return this')();
 }
@@ -379,4 +388,4 @@ var debug = global$1.localStorage && global$1.localStorage.getItem("viewjs.debug
     return function () {};
 };
 
-export { getGlobal, callFunc, callFuncCtx, result, getOption, triggerMethodOn, isObjectLike, isObject, isPlainObject, isFunction, isConstructor, isString, isElement, isNumber, isNumeric, extend, has, slice, camelcase, uniqueId, indexOf, equal, Invoker, setInvoker, debug, Base };
+export { matches, getGlobal, callFunc, callFuncCtx, result, getOption, triggerMethodOn, isObjectLike, isObject, isPlainObject, isFunction, isConstructor, isString, isElement, isNumber, isNumeric, extend, has, slice, camelcase, uniqueId, indexOf, equal, Invoker, setInvoker, debug, Base };

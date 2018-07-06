@@ -1,5 +1,24 @@
 import { Call, Callback, Constructor } from './types';
 
+
+// Because IE/edge stinks!
+const ElementProto: any = (typeof Element !== 'undefined' && Element.prototype) || {};
+
+const matchesSelector = ElementProto.matches ||
+    ElementProto.webkitMatchesSelector ||
+    ElementProto.mozMatchesSelector ||
+    ElementProto.msMatchesSelector ||
+    ElementProto.oMatchesSelector || function (this: Element, selector: string) {
+        var nodeList = ((this.parentNode || document) as Element).querySelectorAll(selector) || [];
+        return !!~indexOf(nodeList, this);
+    };
+
+
+export function matches(elm: Element, selector: string): boolean {
+    return matchesSelector.call(elm, selector)
+}
+
+
 export function getGlobal() {
     return Function('return this')();
 }

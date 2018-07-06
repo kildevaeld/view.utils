@@ -26,6 +26,15 @@
       }
     };
 
+    // Because IE/edge stinks!
+    var ElementProto = typeof Element !== 'undefined' && Element.prototype || {};
+    var matchesSelector = ElementProto.matches || ElementProto.webkitMatchesSelector || ElementProto.mozMatchesSelector || ElementProto.msMatchesSelector || ElementProto.oMatchesSelector || function (selector) {
+        var nodeList = (this.parentNode || document).querySelectorAll(selector) || [];
+        return !!~indexOf(nodeList, this);
+    };
+    function matches(elm, selector) {
+        return matchesSelector.call(elm, selector);
+    }
     function getGlobal() {
         return Function('return this')();
     }
@@ -385,6 +394,7 @@
         return function () {};
     };
 
+    exports.matches = matches;
     exports.getGlobal = getGlobal;
     exports.callFunc = callFunc;
     exports.callFuncCtx = callFuncCtx;
