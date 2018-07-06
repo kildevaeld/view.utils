@@ -3,8 +3,8 @@ export interface Call {
     handler: (...args: any[]) => void;
 }
 export declare function callFunc(fn: Call[], args?: any[]): void;
-export declare function result(obj: any, prop: string, ...args: any[]): any;
-export declare function getOption<T>(option: string, objs: any[]): T | undefined;
+export declare function result<T>(obj: any, prop: string, ...args: any[]): T | undefined;
+export declare function getOption<T>(option: string, objs: any[], resolve?: boolean): T | undefined;
 /**
  * Trigger an event on an object, if it's an eventemitter,
  * will also call an method "on<EventName>" if it's exists
@@ -24,7 +24,7 @@ export declare function isConstructor(a: any): a is Function;
 export declare function isString(a: any): a is string;
 export declare function isElement(input: any): input is Element;
 export declare function isNumber(num: any): num is number;
-export declare function isNumberic(num: any): num is number;
+export declare function isNumeric(num: any): num is number;
 export declare function extend<T extends Object, U extends Object>(obj: T, ...args: U[]): T & U;
 export declare function has(obj: Object, prop: string): boolean;
 export declare function camelcase(input: string): string;

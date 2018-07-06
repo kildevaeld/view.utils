@@ -19,14 +19,16 @@ export function callFunc(fn: Call[], args: any[] = []) {
     }
 }
 
-export function result(obj: any, prop: string, ...args: any[]) {
+export function result<T>(obj: any, prop: string, ...args: any[]): T | undefined {
     if (isFunction(obj[prop])) return obj[prop].apply(obj, args);
     return obj[prop];
 }
 
-export function getOption<T>(option: string, objs: any[]): T | undefined {
+export function getOption<T>(option: string, objs: any[], resolve: boolean = false): T | undefined {
     for (let i = 0, ii = objs.length; i < ii; i++) {
-        if (isObject(objs[i]) && objs[i][option]) return objs[i][option];
+        if (isObjectLike(objs[i]) && has(objs[i], option)) {
+            return resolve ? result(objs[i], option) : objs[i][option];
+        }
     }
     return void 0;
 }
@@ -127,7 +129,7 @@ export function isNumber(num: any): num is number {
     return typeof num === 'number';
 }
 
-export function isNumberic(num: any): num is number {
+export function isNumeric(num: any): num is number {
     if (typeof num === 'number') {
         return num - num === 0;
     }

@@ -40,9 +40,11 @@
         if (isFunction(obj[prop])) return obj[prop].apply(obj, args);
         return obj[prop];
     }
-    function getOption(option, objs) {
+    function getOption(option, objs, resolve = false) {
         for (let i = 0, ii = objs.length; i < ii; i++) {
-            if (isObject(objs[i]) && objs[i][option]) return objs[i][option];
+            if (isObjectLike(objs[i]) && has(objs[i], option)) {
+                return resolve ? result(objs[i], option) : objs[i][option];
+            }
         }
         return void 0;
     }
@@ -118,7 +120,7 @@
     function isNumber(num) {
         return typeof num === 'number';
     }
-    function isNumberic(num) {
+    function isNumeric(num) {
         if (typeof num === 'number') {
             return num - num === 0;
         }
@@ -257,7 +259,7 @@
     exports.isString = isString;
     exports.isElement = isElement;
     exports.isNumber = isNumber;
-    exports.isNumberic = isNumberic;
+    exports.isNumeric = isNumeric;
     exports.extend = extend;
     exports.has = has;
     exports.camelcase = camelcase;
