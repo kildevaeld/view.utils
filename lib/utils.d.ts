@@ -26,7 +26,7 @@ export declare function isNumber(num: any): num is number;
 export declare function isNumeric(num: any): num is number;
 export declare function extend<T extends Object, U extends Object>(obj: T, ...args: U[]): T & U;
 export declare function has(obj: Object, prop: string): boolean;
-export declare function slice<T>(obj: Array<T>, start?: number, len?: number): T[];
+export declare function slice<T>(obj: ArrayLike<T>, start?: number, len?: number): T[];
 export declare function camelcase(input: string): string;
 export declare function uniqueId(prefix?: string): string;
 export declare function indexOf<T>(array: ArrayLike<T>, item: T): number;

@@ -174,7 +174,7 @@ export function has(obj: Object, prop: string): boolean {
     return _has.call(obj, prop)
 }
 
-export function slice<T>(obj: Array<T>, start?: number, len?: number): T[] {
+export function slice<T>(obj: ArrayLike<T>, start?: number, len?: number): T[] {
     return _slice.call(obj, start, len)
 }
 
