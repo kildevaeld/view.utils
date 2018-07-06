@@ -26,6 +26,9 @@
       }
     };
 
+    function getGlobal() {
+        return Function('return this')();
+    }
     function callFunc(fn) {
         var args = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
 
@@ -355,7 +358,8 @@
       classCallCheck(this, Base);
     };
 
-    var debug = localStorage && localStorage.getItem("viewjs.debug") != null ? function (namespace) {
+    var global$1 = getGlobal();
+    var debug = global$1.localStorage && global$1.localStorage.getItem("viewjs.debug") != null ? function (namespace) {
         return function () {
             var _console;
 
@@ -377,6 +381,7 @@
         return function () {};
     };
 
+    exports.getGlobal = getGlobal;
     exports.callFunc = callFunc;
     exports.callFuncCtx = callFuncCtx;
     exports.result = result;

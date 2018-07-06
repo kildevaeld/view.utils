@@ -20,6 +20,9 @@ var toConsumableArray = function (arr) {
   }
 };
 
+function getGlobal() {
+    return Function('return this')();
+}
 function callFunc(fn) {
     var args = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
 
@@ -349,7 +352,8 @@ var Base = function Base() {
   classCallCheck(this, Base);
 };
 
-var debug = localStorage && localStorage.getItem("viewjs.debug") != null ? function (namespace) {
+var global$1 = getGlobal();
+var debug = global$1.localStorage && global$1.localStorage.getItem("viewjs.debug") != null ? function (namespace) {
     return function () {
         var _console;
 
@@ -371,4 +375,4 @@ var debug = localStorage && localStorage.getItem("viewjs.debug") != null ? funct
     return function () {};
 };
 
-export { callFunc, callFuncCtx, result, getOption, triggerMethodOn, isObjectLike, isObject, isPlainObject, isFunction, isConstructor, isString, isElement, isNumber, isNumeric, extend, has, camelcase, uniqueId, indexOf, equal, Invoker, setInvoker, debug, Base };
+export { getGlobal, callFunc, callFuncCtx, result, getOption, triggerMethodOn, isObjectLike, isObject, isPlainObject, isFunction, isConstructor, isString, isElement, isNumber, isNumeric, extend, has, camelcase, uniqueId, indexOf, equal, Invoker, setInvoker, debug, Base };

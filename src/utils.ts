@@ -1,5 +1,9 @@
 import { Call, Callback, Constructor } from './types';
 
+export function getGlobal() {
+    return Function('return this')();
+}
+
 export function callFunc(fn: Call[], args: any[] = []) {
 
     let l = fn.length, i = -1, a1 = args[0], a2 = args[1],

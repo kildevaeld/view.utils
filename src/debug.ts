@@ -1,9 +1,9 @@
-import { isString, isObject } from './utils';
+import { isString, isObject, getGlobal } from './utils';
 import { Base } from './types';
 
+const global = getGlobal();
 
-
-export const debug = localStorage && localStorage.getItem("viewjs.debug") != null
+export const debug = global.localStorage && global.localStorage.getItem("viewjs.debug") != null
     ? (namespace: string) => (...args: any[]) => {
         const l = args.length;
         if (l && isString(args[0])) {
