@@ -1,8 +1,4 @@
-export declare type Callback = (...args: any[]) => void;
-export interface Call {
-    ctx?: any;
-    handler: Callback;
-}
+import { Call, Callback, Constructor } from './types';
 export declare function callFunc(fn: Call[], args?: any[]): void;
 export declare function callFuncCtx(fn: Callback[] | Callback, args?: any[], ctx?: any): void;
 export declare function result<T>(obj: any, prop: string, ...args: any[]): T | undefined;
@@ -22,7 +18,7 @@ export declare function isObjectLike(val: any): val is object;
 export declare function isObject(val: any): val is object;
 export declare function isPlainObject(o: any): o is object;
 export declare function isFunction(a: any): a is Function;
-export declare function isConstructor(a: any): a is Function;
+export declare function isConstructor<T = {}>(a: any): a is Constructor<T>;
 export declare function isString(a: any): a is string;
 export declare function isElement(input: any): input is Element;
 export declare function isNumber(num: any): num is number;

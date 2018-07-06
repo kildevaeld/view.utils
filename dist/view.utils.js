@@ -4,8 +4,32 @@
     (factory((global.viewjs = global.viewjs || {}, global.viewjs.utils = {})));
 }(this, (function (exports) { 'use strict';
 
-    function callFunc(fn, args = []) {
-        let l = fn.length,
+    var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+      return typeof obj;
+    } : function (obj) {
+      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+    };
+
+    var classCallCheck = function (instance, Constructor) {
+      if (!(instance instanceof Constructor)) {
+        throw new TypeError("Cannot call a class as a function");
+      }
+    };
+
+    var toConsumableArray = function (arr) {
+      if (Array.isArray(arr)) {
+        for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i];
+
+        return arr2;
+      } else {
+        return Array.from(arr);
+      }
+    };
+
+    function callFunc(fn) {
+        var args = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+
+        var l = fn.length,
             i = -1,
             a1 = args[0],
             a2 = args[1],
@@ -14,31 +38,41 @@
             a5 = args[4];
         switch (args.length) {
             case 0:
-                while (++i < l) fn[i].handler.call(fn[i].ctx);
-                return;
+                while (++i < l) {
+                    fn[i].handler.call(fn[i].ctx);
+                }return;
             case 1:
-                while (++i < l) fn[i].handler.call(fn[i].ctx, a1);
-                return;
+                while (++i < l) {
+                    fn[i].handler.call(fn[i].ctx, a1);
+                }return;
             case 2:
-                while (++i < l) fn[i].handler.call(fn[i].ctx, a1, a2);
-                return;
+                while (++i < l) {
+                    fn[i].handler.call(fn[i].ctx, a1, a2);
+                }return;
             case 3:
-                while (++i < l) fn[i].handler.call(fn[i].ctx, a1, a2, a3);
-                return;
+                while (++i < l) {
+                    fn[i].handler.call(fn[i].ctx, a1, a2, a3);
+                }return;
             case 4:
-                while (++i < l) fn[i].handler.call(fn[i].ctx, a1, a2, a3, a4);
-                return;
+                while (++i < l) {
+                    fn[i].handler.call(fn[i].ctx, a1, a2, a3, a4);
+                }return;
             case 5:
-                while (++i < l) fn[i].handler.call(fn[i].ctx, a1, a2, a3, a4, a5);
-                return;
+                while (++i < l) {
+                    fn[i].handler.call(fn[i].ctx, a1, a2, a3, a4, a5);
+                }return;
             default:
-                while (++i < l) fn[i].handler.apply(fn[i].ctx, args);
-                return;
+                while (++i < l) {
+                    fn[i].handler.apply(fn[i].ctx, args);
+                }return;
         }
     }
-    function callFuncCtx(fn, args = [], ctx) {
+    function callFuncCtx(fn) {
+        var args = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+        var ctx = arguments[2];
+
         if (!Array.isArray(fn)) fn = [fn];
-        let l = fn.length,
+        var l = fn.length,
             i = -1,
             a1 = args[0],
             a2 = args[1],
@@ -47,34 +81,47 @@
             a5 = args[4];
         switch (args.length) {
             case 0:
-                while (++i < l) fn[i].call(ctx);
-                return;
+                while (++i < l) {
+                    fn[i].call(ctx);
+                }return;
             case 1:
-                while (++i < l) fn[i].call(ctx, a1);
-                return;
+                while (++i < l) {
+                    fn[i].call(ctx, a1);
+                }return;
             case 2:
-                while (++i < l) fn[i].call(ctx, a1, a2);
-                return;
+                while (++i < l) {
+                    fn[i].call(ctx, a1, a2);
+                }return;
             case 3:
-                while (++i < l) fn[i].call(ctx, a1, a2, a3);
-                return;
+                while (++i < l) {
+                    fn[i].call(ctx, a1, a2, a3);
+                }return;
             case 4:
-                while (++i < l) fn[i].call(ctx, a1, a2, a3, a4);
-                return;
+                while (++i < l) {
+                    fn[i].call(ctx, a1, a2, a3, a4);
+                }return;
             case 5:
-                while (++i < l) fn[i].call(ctx, a1, a2, a3, a4, a5);
-                return;
+                while (++i < l) {
+                    fn[i].call(ctx, a1, a2, a3, a4, a5);
+                }return;
             default:
-                while (++i < l) fn[i].apply(ctx, args);
-                return;
+                while (++i < l) {
+                    fn[i].apply(ctx, args);
+                }return;
         }
     }
-    function result(obj, prop, ...args) {
+    function result(obj, prop) {
+        for (var _len = arguments.length, args = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
+            args[_key - 2] = arguments[_key];
+        }
+
         if (isFunction(obj[prop])) return obj[prop].apply(obj, args);
         return obj[prop];
     }
-    function getOption(option, objs, resolve = false) {
-        for (let i = 0, ii = objs.length; i < ii; i++) {
+    function getOption(option, objs) {
+        var resolve = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+        for (var i = 0, ii = objs.length; i < ii; i++) {
             if (isObjectLike(objs[i]) && has(objs[i], option)) {
                 return resolve ? result(objs[i], option) : objs[i][option];
             }
@@ -91,8 +138,12 @@
      * @param {string} eventName
      * @param {...any[]} args
      */
-    function triggerMethodOn(self, eventName, ...args) {
-        const ev = camelcase("on-" + eventName.replace(':', '-'));
+    function triggerMethodOn(self, eventName) {
+        for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
+            args[_key2 - 2] = arguments[_key2];
+        }
+
+        var ev = camelcase("on-" + eventName.replace(':', '-'));
         if (self[ev] && typeof self[ev] === 'function') {
             callFunc([{
                 handler: self[ev],
@@ -111,7 +162,7 @@
         return val === Object(val);
     }
     function isObject(val) {
-        return val != null && typeof val === 'object' && Array.isArray(val) === false;
+        return val != null && (typeof val === 'undefined' ? 'undefined' : _typeof(val)) === 'object' && Array.isArray(val) === false;
     }
     function isObjectObject(o) {
         return isObject(o) === true && Object.prototype.toString.call(o) === '[object Object]';
@@ -148,7 +199,7 @@
     }
     function isElement(input) {
         if (!input) return false;else if (input instanceof Element) return true;
-        return input != null && typeof input === 'object' && input.nodeType === Node.ELEMENT_NODE && typeof input.style === 'object' && typeof input.ownerDocument === 'object';
+        return input != null && (typeof input === 'undefined' ? 'undefined' : _typeof(input)) === 'object' && input.nodeType === Node.ELEMENT_NODE && _typeof(input.style) === 'object' && _typeof(input.ownerDocument) === 'object';
     }
     function isNumber(num) {
         return typeof num === 'number';
@@ -162,18 +213,23 @@
         }
         return false;
     }
-    function extend(obj, ...args) {
+    function extend(obj) {
         if (!isObject(obj)) return obj;
-        for (let i = 0, ii = args.length; i < ii; i++) {
-            const o = args[i];
+
+        for (var _len3 = arguments.length, args = Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++) {
+            args[_key3 - 1] = arguments[_key3];
+        }
+
+        for (var i = 0, ii = args.length; i < ii; i++) {
+            var o = args[i];
             if (!isObject(o)) continue;
-            for (const k in o) {
+            for (var k in o) {
                 if (has(o, k)) obj[k] = o[k];
             }
         }
         return obj;
     }
-    const _has = Object.prototype.hasOwnProperty;
+    var _has = Object.prototype.hasOwnProperty;
     function has(obj, prop) {
         return _has.call(obj, prop);
     }
@@ -183,18 +239,21 @@
         });
     }
     var idCounter = 0;
-    function uniqueId(prefix = "") {
+    function uniqueId() {
+        var prefix = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
+
         return prefix + ++idCounter;
     }
     function indexOf(array, item) {
-        for (var i = 0, len = array.length; i < len; i++) if (array[i] === item) return i;
-        return -1;
+        for (var i = 0, len = array.length; i < len; i++) {
+            if (array[i] === item) return i;
+        }return -1;
     }
 
     function equal(a, b) {
         return eq(a, b, [], []);
     }
-    const toString = Object.prototype.toString;
+    var toString = Object.prototype.toString;
     function eq(a, b, aStack, bStack) {
         // Identical objects are equal. `0 === -0`, but they aren't identical.
         // See the [Harmony `egal` proposal](http://wiki.ecmascript.org/doku.php?id=harmony:egal).
@@ -224,7 +283,7 @@
             case '[object RegExp]':
                 return a.source == b.source && a.global == b.global && a.multiline == b.multiline && a.ignoreCase == b.ignoreCase;
         }
-        if (typeof a != 'object' || typeof b != 'object') return false;
+        if ((typeof a === 'undefined' ? 'undefined' : _typeof(a)) != 'object' || (typeof b === 'undefined' ? 'undefined' : _typeof(b)) != 'object') return false;
         // Assume equality for cyclic structures. The algorithm for detecting cyclic
         // structures is adapted from ES 5.1 section 15.12.3, abstract operation `JO`.
         var length = aStack.length;
@@ -280,6 +339,44 @@
         return result$$1;
     }
 
+    var defaultInvoker = {
+        get: function get(V) {
+            if (typeof Reflect !== 'undefined' && typeof Reflect.construct === 'function') return Reflect.construct(V, []);
+            return new V();
+        }
+    };
+    exports.Invoker = defaultInvoker;
+    function setInvoker(i) {
+        if (!i) i = defaultInvoker;
+        exports.Invoker = i;
+    }
+
+    var Base = function Base() {
+      classCallCheck(this, Base);
+    };
+
+    var debug = localStorage && localStorage.getItem("viewjs.debug") != null ? function (namespace) {
+        return function () {
+            var _console;
+
+            for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+                args[_key] = arguments[_key];
+            }
+
+            var l = args.length;
+            if (l && isString(args[0])) {
+                args[0] = namespace + ' ' + args[0];
+            } else if (l) {
+                args.unshift(namespace);
+            } else return;
+            (_console = console).log.apply(_console, toConsumableArray(args.map(function (m) {
+                return isObject(m) && m instanceof Base ? String(m) : m;
+            })));
+        };
+    } : function (_) {
+        return function () {};
+    };
+
     exports.callFunc = callFunc;
     exports.callFuncCtx = callFuncCtx;
     exports.result = result;
@@ -300,6 +397,9 @@
     exports.uniqueId = uniqueId;
     exports.indexOf = indexOf;
     exports.equal = equal;
+    exports.setInvoker = setInvoker;
+    exports.debug = debug;
+    exports.Base = Base;
 
     Object.defineProperty(exports, '__esModule', { value: true });
 

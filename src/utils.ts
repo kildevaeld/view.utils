@@ -1,10 +1,4 @@
-
-export type Callback = (...args: any[]) => void;
-
-export interface Call {
-    ctx?: any
-    handler: Callback;
-}
+import { Call, Callback, Constructor } from './types';
 
 export function callFunc(fn: Call[], args: any[] = []) {
 
@@ -119,7 +113,7 @@ export function isFunction(a: any): a is Function {
     return typeof a === 'function';
 }
 
-export function isConstructor(a: any): a is Function {
+export function isConstructor<T = {}>(a: any): a is Constructor<T> {
     try {
         Reflect.construct(String, [], a);
     } catch (e) {

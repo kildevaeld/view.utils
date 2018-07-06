@@ -14,6 +14,10 @@ module.exports = [
             format: 'umd',
             name: 'viewjs.utils'
         },
+        treeshake: {
+            pureExternalModules: false,
+            propertyReadSideEffects: false
+        },
         // external: ["@viewjs/view", "mixins.events", "equaljs"],
         // globals: {
         //     'mixins.events': 'mixins.events',
