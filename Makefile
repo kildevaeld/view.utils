@@ -2,7 +2,7 @@
 .PHONY: build typescript rollup test benchmark
 
 
-build: rollup typescript test benchmark
+build: rollup typescript test
 
 typescript:
 	node node_modules/.bin/tsc
