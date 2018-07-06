@@ -45,6 +45,7 @@ suite.on('cycle', function (event) {
         console.log(String(event.target));
     })
     .on('complete', function () {
+        console.log('')
         console.log('Fastest is ' + this.filter('fastest').map('name'));
         console.log('Slowest is ' + this.filter('slowest').map('name'));
         const all = this.filter('successful');
@@ -54,7 +55,9 @@ suite.on('cycle', function (event) {
                 mean: m.stats.mean
             }
         })
-        console.log(out)
+        out.sort((r, l) => r.mean - l.mean);
+        console.log('');
+        console.log(out.map(m => `${m.name}:\t\t\t ${m.mean}`).join('\n'));
     }).run({
         async: true
     });
