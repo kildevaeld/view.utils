@@ -1,11 +1,17 @@
 
-.PHONY: build typescript rollup
+.PHONY: build typescript rollup test benchmark
 
 
-build: rollup typescript
+build: rollup typescript test benchmark
 
 typescript:
-	node_modules/.bin/tsc
+	node node_modules/.bin/tsc
 	
 rollup:
-	node_modules/.bin/rollup -c
+	node node_modules/.bin/rollup -c
+
+test:
+	node node_modules/.bin/mocha -R Spec -r should
+
+benchmark:
+	node benchmark/benchmark.js
