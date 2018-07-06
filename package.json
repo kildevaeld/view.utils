@@ -30,5 +30,6 @@
     "typescript": "^2.9.2"
   },
   "typings": "lib/index.d.ts",
-  "browser": "./dist/view.utils.js"
+  "browser": "./dist/view.utils.js",
+  "module": "./dist/view.utils.es6"
 }

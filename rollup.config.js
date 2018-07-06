@@ -28,8 +28,8 @@ module.exports = [
             typescript({
                 typescript: require('typescript')
             }),
-            resolve(), // so Rollup can find `ms`
-            commonjs(), // so Rollup can convert `ms` to an ES module
+            //resolve(), // so Rollup can find `ms`
+            //commonjs(), // so Rollup can convert `ms` to an ES module
             babel({
                 //presets: ['env'],
                 exclude: ['node_modules/**']
@@ -42,22 +42,27 @@ module.exports = [
     // instead of two, but it's quicker to generate multiple
     // builds from a single configuration where possible, using
     // the `targets` option which can specify `dest` and `format`)
-    /*{
-        entry: 'src/main.js',
-        external: ['ms'],
-        targets: [{
-                dest: pkg.main,
-                format: 'cjs'
-            },
+    {
+        input: 'src/index.ts',
+        //external: ['ms'],
+        output: [
+            /*{
+                            dest: pkg.main,
+                            format: 'cjs'
+                        },*/
             {
-                dest: pkg.module,
+                file: pkg.module,
                 format: 'es'
             }
         ],
         plugins: [
+            typescript({
+                typescript: require('typescript'),
+                target: 'es2015'
+            }),
             babel({
                 exclude: ['node_modules/**']
             })
         ]
-    }*/
+    }
 ];
