@@ -232,9 +232,13 @@
         }
         return obj;
     }
-    var _has = Object.prototype.hasOwnProperty;
+    var _has = Object.prototype.hasOwnProperty,
+        _slice = Array.prototype.slice;
     function has(obj, prop) {
         return _has.call(obj, prop);
+    }
+    function slice(obj, start, len) {
+        return _slice.call(obj, start, len);
     }
     function camelcase(input) {
         return input.toLowerCase().replace(/-(.)/g, function (_, group1) {
@@ -398,6 +402,7 @@
     exports.isNumeric = isNumeric;
     exports.extend = extend;
     exports.has = has;
+    exports.slice = slice;
     exports.camelcase = camelcase;
     exports.uniqueId = uniqueId;
     exports.indexOf = indexOf;

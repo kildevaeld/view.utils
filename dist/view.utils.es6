@@ -226,9 +226,13 @@ function extend(obj) {
     }
     return obj;
 }
-var _has = Object.prototype.hasOwnProperty;
+var _has = Object.prototype.hasOwnProperty,
+    _slice = Array.prototype.slice;
 function has(obj, prop) {
     return _has.call(obj, prop);
+}
+function slice(obj, start, len) {
+    return _slice.call(obj, start, len);
 }
 function camelcase(input) {
     return input.toLowerCase().replace(/-(.)/g, function (_, group1) {
@@ -375,4 +379,4 @@ var debug = global$1.localStorage && global$1.localStorage.getItem("viewjs.debug
     return function () {};
 };
 
-export { getGlobal, callFunc, callFuncCtx, result, getOption, triggerMethodOn, isObjectLike, isObject, isPlainObject, isFunction, isConstructor, isString, isElement, isNumber, isNumeric, extend, has, camelcase, uniqueId, indexOf, equal, Invoker, setInvoker, debug, Base };
+export { getGlobal, callFunc, callFuncCtx, result, getOption, triggerMethodOn, isObjectLike, isObject, isPlainObject, isFunction, isConstructor, isString, isElement, isNumber, isNumeric, extend, has, slice, camelcase, uniqueId, indexOf, equal, Invoker, setInvoker, debug, Base };

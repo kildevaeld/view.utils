@@ -167,9 +167,15 @@ export function extend<T extends Object, U extends Object>(obj: T, ...args: U[])
     return obj as T & U;
 }
 
-const _has = Object.prototype.hasOwnProperty;
+const _has = Object.prototype.hasOwnProperty,
+    _slice = Array.prototype.slice;
+
 export function has(obj: Object, prop: string): boolean {
     return _has.call(obj, prop)
+}
+
+export function slice<T>(obj: Array<T>, start?: number, len?: number): T[] {
+    return _slice.call(obj, start, len)
 }
 
 export function camelcase(input: string): string {
