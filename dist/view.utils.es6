@@ -10,6 +10,24 @@ var classCallCheck = function (instance, Constructor) {
   }
 };
 
+var createClass = function () {
+  function defineProperties(target, props) {
+    for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i];
+      descriptor.enumerable = descriptor.enumerable || false;
+      descriptor.configurable = true;
+      if ("value" in descriptor) descriptor.writable = true;
+      Object.defineProperty(target, descriptor.key, descriptor);
+    }
+  }
+
+  return function (Constructor, protoProps, staticProps) {
+    if (protoProps) defineProperties(Constructor.prototype, protoProps);
+    if (staticProps) defineProperties(Constructor, staticProps);
+    return Constructor;
+  };
+}();
+
 var toConsumableArray = function (arr) {
   if (Array.isArray(arr)) {
     for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i];
@@ -128,7 +146,7 @@ function getOption(option, objs) {
     var resolve = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
 
     for (var i = 0, ii = objs.length; i < ii; i++) {
-        if (isObjectLike(objs[i]) && has(objs[i], option)) {
+        if (isObjectLike(objs[i]) && objs[i][option]) {
             return resolve ? result(objs[i], option) : objs[i][option];
         }
     }
@@ -361,9 +379,17 @@ function setInvoker(i) {
     Invoker = i;
 }
 
-var Base = function Base() {
-  classCallCheck(this, Base);
-};
+var Base = function () {
+    function Base() {
+        classCallCheck(this, Base);
+    }
+
+    createClass(Base, [{
+        key: 'destroy',
+        value: function destroy() {}
+    }]);
+    return Base;
+}();
 
 var global$1 = getGlobal();
 var debug = global$1.localStorage && global$1.localStorage.getItem("viewjs.debug") != null ? function (namespace) {

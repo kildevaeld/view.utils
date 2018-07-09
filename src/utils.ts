@@ -60,7 +60,7 @@ export function result<T>(obj: any, prop: string, ...args: any[]): T | undefined
 
 export function getOption<T>(option: string, objs: any[], resolve: boolean = false): T | undefined {
     for (let i = 0, ii = objs.length; i < ii; i++) {
-        if (isObjectLike(objs[i]) && has(objs[i], option)) {
+        if (isObjectLike(objs[i]) && objs[i][option]) {
             return resolve ? result(objs[i], option) : objs[i][option];
         }
     }
