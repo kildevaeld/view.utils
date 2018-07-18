@@ -1,5 +1,9 @@
 import { Call, Callback, Constructor } from './types';
 
+export class Base {
+    static inherit = inherit;
+    destroy() { }
+}
 
 // Because IE/edge stinks!
 const ElementProto: any = (typeof Element !== 'undefined' && Element.prototype) || {};
@@ -69,8 +73,8 @@ export function getOption<T>(option: string, objs: any[], resolve: boolean = fal
 
 
 /**
- * Trigger an event on an object, if it's an eventemitter,
- * will also call an method "on<EventName>" if it's exists
+ * Trigger an event on an object, if it's an eventemitter.
+ * Will also call an method "on<EventName>" if it's exists
  * 
  * @export
  * @template T 
@@ -212,3 +216,58 @@ export function indexOf<T>(array: ArrayLike<T>, item: T): number {
     for (var i = 0, len = array.length; i < len; i++) if (array[i] === item) return i;
     return -1;
 }
+
+
+export type Properties = { [key: string]: any }
+
+
+export function inherit<T extends Constructor<C>, C, P extends Properties, S extends Properties>(this: T, protoProps: P, staticProps?: S): T & Constructor<P> {
+    var parent = this;
+    var child;
+
+    // The constructor function for the new subclass is either defined by you
+    // (the "constructor" property in your `protoProps` definition), or defaulted
+    // by us to simply call the parent constructor.
+    if (protoProps && has(protoProps, 'constructor')) {
+        child = protoProps.constructor;
+    } else {
+        child = function (this: C) { return parent.apply(this, arguments); };
+    }
+
+    // Add static properties to the constructor function, if supplied.
+    Object.assign(child, parent, staticProps);
+
+    // Set the prototype chain to inherit from `parent`, without calling
+    // `parent`'s constructor function and add the prototype properties.
+    child.prototype = create(parent.prototype, protoProps);
+    child.prototype.constructor = child;
+
+    // Set a convenience property in case the parent's prototype is needed
+    // later.
+    (child as any).__super__ = parent.prototype;
+
+    return child as any;
+};
+
+
+const nativeCreate = Object.create;
+function Ctor() { };
+
+function baseCreate(prototype: any) {
+    if (!isObject(prototype)) return {};
+    if (nativeCreate) return nativeCreate(prototype);
+    Ctor.prototype = prototype;
+    var result = new (Ctor as any);
+    Ctor.prototype = null;
+    return result;
+};
+
+
+function create(prototype: any, props: any) {
+    var result = baseCreate(prototype);
+    if (props) Object.assign(result, props);
+    return result;
+}
+
+
+export function noop() { }

@@ -38,6 +38,19 @@ var toConsumableArray = function (arr) {
   }
 };
 
+var Base = function () {
+    function Base() {
+        classCallCheck(this, Base);
+    }
+
+    createClass(Base, [{
+        key: 'destroy',
+        value: function destroy() {}
+    }]);
+    return Base;
+}();
+
+Base.inherit = inherit;
 // Because IE/edge stinks!
 var ElementProto = typeof Element !== 'undefined' && Element.prototype || {};
 var matchesSelector = ElementProto.matches || ElementProto.webkitMatchesSelector || ElementProto.mozMatchesSelector || ElementProto.msMatchesSelector || ElementProto.oMatchesSelector || function (selector) {
@@ -153,8 +166,8 @@ function getOption(option, objs) {
     return void 0;
 }
 /**
- * Trigger an event on an object, if it's an eventemitter,
- * will also call an method "on<EventName>" if it's exists
+ * Trigger an event on an object, if it's an eventemitter.
+ * Will also call an method "on<EventName>" if it's exists
  *
  * @export
  * @template T
@@ -277,6 +290,46 @@ function indexOf(array, item) {
         if (array[i] === item) return i;
     }return -1;
 }
+function inherit(protoProps, staticProps) {
+    var parent = this;
+    var child;
+    // The constructor function for the new subclass is either defined by you
+    // (the "constructor" property in your `protoProps` definition), or defaulted
+    // by us to simply call the parent constructor.
+    if (protoProps && has(protoProps, 'constructor')) {
+        child = protoProps.constructor;
+    } else {
+        child = function child() {
+            return parent.apply(this, arguments);
+        };
+    }
+    // Add static properties to the constructor function, if supplied.
+    Object.assign(child, parent, staticProps);
+    // Set the prototype chain to inherit from `parent`, without calling
+    // `parent`'s constructor function and add the prototype properties.
+    child.prototype = create(parent.prototype, protoProps);
+    child.prototype.constructor = child;
+    // Set a convenience property in case the parent's prototype is needed
+    // later.
+    child.__super__ = parent.prototype;
+    return child;
+}
+var nativeCreate = Object.create;
+function Ctor() {}
+function baseCreate(prototype) {
+    if (!isObject(prototype)) return {};
+    if (nativeCreate) return nativeCreate(prototype);
+    Ctor.prototype = prototype;
+    var result = new Ctor();
+    Ctor.prototype = null;
+    return result;
+}
+function create(prototype, props) {
+    var result = baseCreate(prototype);
+    if (props) Object.assign(result, props);
+    return result;
+}
+function noop() {}
 
 function equal(a, b) {
     return eq(a, b, [], []);
@@ -367,31 +420,28 @@ function eq(a, b, aStack, bStack) {
     return result$$1;
 }
 
+var hasReflect = typeof Reflect !== 'undefined' && isFunction(Reflect.construct);
 var defaultInvoker = {
     get: function get(V) {
-        if (typeof Reflect !== 'undefined' && typeof Reflect.construct === 'function') return Reflect.construct(V, []);
+        if (hasReflect) return Reflect.construct(V, []);
         return new V();
     }
 };
 var Invoker = defaultInvoker;
+/**
+ * Set current  invoker.
+ * If `i` is undefined, the defaultInvoker will be used
+ *
+ * @export
+ * @param {IInvoker} [i]
+ */
 function setInvoker(i) {
     if (!i) i = defaultInvoker;
     Invoker = i;
 }
 
-var Base = function () {
-    function Base() {
-        classCallCheck(this, Base);
-    }
-
-    createClass(Base, [{
-        key: 'destroy',
-        value: function destroy() {}
-    }]);
-    return Base;
-}();
-
 var global$1 = getGlobal();
+//
 var debug = global$1.localStorage && global$1.localStorage.getItem("viewjs.debug") != null ? function (namespace) {
     return function () {
         var _console;
@@ -411,7 +461,7 @@ var debug = global$1.localStorage && global$1.localStorage.getItem("viewjs.debug
         })));
     };
 } : function (_) {
-    return function () {};
+    return noop;
 };
 
-export { matches, getGlobal, callFunc, callFuncCtx, result, getOption, triggerMethodOn, isObjectLike, isObject, isPlainObject, isFunction, isConstructor, isString, isElement, isNumber, isNumeric, extend, has, slice, camelcase, uniqueId, indexOf, equal, Invoker, setInvoker, debug, Base };
+export { matches, getGlobal, callFunc, callFuncCtx, result, getOption, triggerMethodOn, isObjectLike, isObject, isPlainObject, isFunction, isConstructor, isString, isElement, isNumber, isNumeric, extend, has, slice, camelcase, uniqueId, indexOf, inherit, noop, Base, equal, Invoker, setInvoker, debug };

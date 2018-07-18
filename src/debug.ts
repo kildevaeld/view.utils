@@ -1,8 +1,8 @@
-import { isString, isObject, getGlobal } from './utils';
-import { Base } from './types';
+import { isString, isObject, getGlobal, Base, noop } from './utils';
 
 const global = getGlobal();
 
+//
 export const debug = global.localStorage && global.localStorage.getItem("viewjs.debug") != null
     ? (namespace: string) => (...args: any[]) => {
         const l = args.length;
@@ -14,4 +14,4 @@ export const debug = global.localStorage && global.localStorage.getItem("viewjs.
 
         console.log(...args.map(m => (isObject(m) && m instanceof Base) ? String(m) : m))
     }
-    : (_: string) => () => { }
+    : (_: string) => noop;

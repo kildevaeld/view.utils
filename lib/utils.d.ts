@@ -1,4 +1,8 @@
 import { Call, Callback, Constructor } from './types';
+export declare class Base {
+    static inherit: typeof inherit;
+    destroy(): void;
+}
 export declare function matches(elm: Element, selector: string): boolean;
 export declare function getGlobal(): any;
 export declare function callFunc(fn: Call[], args?: any[]): void;
@@ -6,8 +10,8 @@ export declare function callFuncCtx(fn: Callback[] | Callback, args?: any[], ctx
 export declare function result<T>(obj: any, prop: string, ...args: any[]): T | undefined;
 export declare function getOption<T>(option: string, objs: any[], resolve?: boolean): T | undefined;
 /**
- * Trigger an event on an object, if it's an eventemitter,
- * will also call an method "on<EventName>" if it's exists
+ * Trigger an event on an object, if it's an eventemitter.
+ * Will also call an method "on<EventName>" if it's exists
  *
  * @export
  * @template T
@@ -31,3 +35,8 @@ export declare function slice<T>(obj: ArrayLike<T>, start?: number, len?: number
 export declare function camelcase(input: string): string;
 export declare function uniqueId(prefix?: string): string;
 export declare function indexOf<T>(array: ArrayLike<T>, item: T): number;
+export declare type Properties = {
+    [key: string]: any;
+};
+export declare function inherit<T extends Constructor<C>, C, P extends Properties, S extends Properties>(this: T, protoProps: P, staticProps?: S): T & Constructor<P>;
+export declare function noop(): void;
