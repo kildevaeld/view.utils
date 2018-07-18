@@ -38,5 +38,9 @@ export declare function indexOf<T>(array: ArrayLike<T>, item: T): number;
 export declare type Properties = {
     [key: string]: any;
 };
-export declare function inherit<T extends Constructor<C>, C, P extends Properties, S extends Properties>(this: T, protoProps: P, staticProps?: S): T & Constructor<P>;
+export interface ConstructorWithSuper<T, S> {
+    new (...args: any[]): T;
+    __super__: S;
+}
+export declare function inherit<T, Proto extends Properties, P extends Properties, S extends Properties>(this: Constructor<T>, protoProps: P, staticProps?: S): Constructor<T> & ConstructorWithSuper<P, T>;
 export declare function noop(): void;

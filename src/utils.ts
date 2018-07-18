@@ -220,8 +220,17 @@ export function indexOf<T>(array: ArrayLike<T>, item: T): number {
 
 export type Properties = { [key: string]: any }
 
+export interface ConstructorWithSuper<T, S> {
+    new(...args: any[]): T;
+    __super__: S
+}
 
-export function inherit<T extends Constructor<C>, C, P extends Properties, S extends Properties>(this: T, protoProps: P, staticProps?: S): T & Constructor<P> {
+export function inherit<
+    T,
+    Proto extends Properties,
+    P extends Properties,
+    S extends Properties
+    >(this: Constructor<T>, protoProps: P, staticProps?: S): Constructor<T> & ConstructorWithSuper<P, T> {
     var parent = this;
     var child;
 
@@ -231,7 +240,7 @@ export function inherit<T extends Constructor<C>, C, P extends Properties, S ext
     if (protoProps && has(protoProps, 'constructor')) {
         child = protoProps.constructor;
     } else {
-        child = function (this: C) { return parent.apply(this, arguments); };
+        child = function (this: {}) { return parent.apply(this, arguments); };
     }
 
     // Add static properties to the constructor function, if supplied.
