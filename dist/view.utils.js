@@ -470,8 +470,6 @@
         return noop;
     };
 
-    //# sourceMappingURL=types.js.map
-
     exports.matches = matches;
     exports.getGlobal = getGlobal;
     exports.callFunc = callFunc;

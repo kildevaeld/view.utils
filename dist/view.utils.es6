@@ -464,6 +464,4 @@ var debug = global$1.localStorage && global$1.localStorage.getItem("viewjs.debug
     return noop;
 };
 
-//# sourceMappingURL=types.js.map
-
 export { matches, getGlobal, callFunc, callFuncCtx, result, getOption, triggerMethodOn, isObjectLike, isObject, isPlainObject, isFunction, isConstructor, isString, isElement, isNumber, isNumeric, extend, has, slice, camelcase, uniqueId, indexOf, inherit, noop, Base, equal, Invoker, setInvoker, debug };
