@@ -2,7 +2,9 @@ import { Call, Callback, Constructor } from './types';
 
 export class Base {
     static inherit = inherit;
-    destroy() { }
+    destroy(): this {
+        return this;
+    }
 }
 
 // Because IE/edge stinks!

@@ -1,7 +1,7 @@
 import { Call, Callback, Constructor } from './types';
 export declare class Base {
     static inherit: typeof inherit;
-    destroy(): void;
+    destroy(): this;
 }
 export declare function matches(elm: Element, selector: string): boolean;
 export declare function getGlobal(): any;

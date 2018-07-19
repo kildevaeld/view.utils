@@ -45,7 +45,9 @@ var Base = function () {
 
     createClass(Base, [{
         key: 'destroy',
-        value: function destroy() {}
+        value: function destroy() {
+            return this;
+        }
     }]);
     return Base;
 }();
