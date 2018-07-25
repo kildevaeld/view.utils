@@ -7,3 +7,7 @@ export interface Call {
     ctx?: any
     handler: Callback;
 }
+
+export interface Destroyable {
+    destroy(): this;
+}

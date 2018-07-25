@@ -6,7 +6,9 @@
   "scripts": {
     "test": "node ./node_modules/.bin/mocha -R dot -r should",
     "build": "node ./node_modules/.bin/tsc; node ./node_modules/.bin/rollup -c",
-    "bench": "node benchmark/benchmark.js"
+    "bench": "node benchmark/benchmark.js",
+    "prepare": "node ./node_modules/.bin/tsc; node ./node_modules/.bin/rollup -c",
+    "prepublishOnly": "node ./node_modules/.bin/mocha -R dot -r should"
   },
   "author": {
     "email": "rasmuskildevaed@gmail.com",

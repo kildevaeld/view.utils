@@ -1,4 +1,4 @@
-import { Call, Callback, Constructor } from './types';
+import { Call, Callback, Constructor, Destroyable } from './types';
 
 export class Base {
     static inherit = inherit;
@@ -151,6 +151,10 @@ export function isConstructor<T = {}>(a: any): a is Constructor<T> {
     return true;
 }
 
+export function isDestroyable(a: any): a is Destroyable {
+    return a && isFunction(a.destroy);
+}
+
 export function isString(a: any): a is string {
     return typeof a === 'string';
 }
@@ -282,3 +286,7 @@ function create(prototype: any, props: any) {
 
 
 export function noop() { }
+
+export function destroy(a: any) {
+    if (isDestroyable(a)) a.destroy();
+}
