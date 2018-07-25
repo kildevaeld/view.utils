@@ -1,6 +1,6 @@
 import { Call, Callback, Constructor, Destroyable } from './types';
 
-export class Base {
+export class Base implements Destroyable {
     static inherit = inherit;
     destroy(): this {
         return this;
