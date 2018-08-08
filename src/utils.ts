@@ -1,4 +1,4 @@
-import { Call, Callback, Constructor, Destroyable } from './types';
+import { Call, Callback, Constructor, Destroyable, Subscribable } from './types';
 
 export class Base implements Destroyable {
     static inherit = inherit;
@@ -153,6 +153,10 @@ export function isConstructor<T = {}>(a: any): a is Constructor<T> {
 
 export function isDestroyable(a: any): a is Destroyable {
     return a && isFunction(a.destroy);
+}
+
+export function isSubscribable<T = any>(a: any): a is Subscribable<T> {
+    return isObjectLike(a) && isFunction((a as any).subscribe);
 }
 
 export function isString(a: any): a is string {
