@@ -9,58 +9,24 @@ module.exports = [
     // browser-friendly UMD build
     {
         input: './src/index.ts',
-        output: {
+        output: [{
             file: pkg.browser,
             format: 'umd',
             name: 'viewjs.utils'
-        },
+        }, {
+            file: pkg.module,
+            format: 'es'
+        }],
         treeshake: {
             pureExternalModules: false,
             propertyReadSideEffects: false
         },
-        // external: ["@viewjs/view", "mixins.events", "equaljs"],
-        // globals: {
-        //     'mixins.events': 'mixins.events',
-        //     '@viewjs/view': 'view',
-        //     'equaljs': 'equaljs'
-        // },
         plugins: [
             typescript({
                 typescript: require('typescript')
             }),
-            //resolve(), // so Rollup can find `ms`
-            //commonjs(), // so Rollup can convert `ms` to an ES module
             babel({
                 //presets: ['env'],
-                exclude: ['node_modules/**']
-            })
-        ]
-    },
-
-    // CommonJS (for Node) and ES module (for bundlers) build.
-    // (We could have three entries in the configuration array
-    // instead of two, but it's quicker to generate multiple
-    // builds from a single configuration where possible, using
-    // the `targets` option which can specify `dest` and `format`)
-    {
-        input: 'src/index.ts',
-        //external: ['ms'],
-        output: [
-            /*{
-                            dest: pkg.main,
-                            format: 'cjs'
-                        },*/
-            {
-                file: pkg.module,
-                format: 'es'
-            }
-        ],
-        plugins: [
-            typescript({
-                typescript: require('typescript'),
-                target: 'es2015'
-            }),
-            babel({
                 exclude: ['node_modules/**']
             })
         ]
